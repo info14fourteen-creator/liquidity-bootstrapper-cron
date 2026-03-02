@@ -1,0 +1,32 @@
+name: Daily Liquidity Bootstrapper
+
+on:
+  schedule:
+    # Daily at 00:10 UTC
+    - cron: "10 0 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run bootstrapper
+        env:
+          TRON_PRIVATE_KEY: ${{ secrets.TRON_PRIVATE_KEY }}
+          BOOTSTRAPPER_ADDRESS: ${{ secrets.BOOTSTRAPPER_ADDRESS }}
+          TRON_FULLNODE: ${{ secrets.TRON_FULLNODE }}
+          TRONGRID_API_KEY: ${{ secrets.TRONGRID_API_KEY }}
+        run: npm run run
