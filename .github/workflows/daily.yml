@@ -2,7 +2,7 @@ name: Daily Liquidity Bootstrapper
 
 on:
   schedule:
-    - cron: "10 0 * * *"
+    - cron: "10 0 * * *"   # 00:10 UTC daily
   workflow_dispatch:
 
 jobs:
@@ -28,4 +28,6 @@ jobs:
           BOOTSTRAPPER_ADDRESS: ${{ secrets.BOOTSTRAPPER_ADDRESS }}
           TRON_FULLNODE: ${{ secrets.TRON_FULLNODE }}
           TRONGRID_API_KEY: ${{ secrets.TRONGRID_API_KEY }}
+          MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+          FEE_LIMIT_SUN: "200000000"
         run: npm run run
