@@ -1,67 +1,61 @@
-# 4TEEN Liquidity Bootstrapper Automation
+# 4TEEN Liquidity Automation
 
-This repository contains the automation infrastructure responsible for executing the daily liquidity operation for the 4TEEN ecosystem.
+This repository contains the automation layer responsible for executing the daily liquidity operation for the 4TEEN ecosystem.
 
-The system interacts with the on-chain Liquidity Bootstrapper contract and triggers the execution when conditions are satisfied.
+The automation interacts with the on-chain **Liquidity Bootstrapper** smart contract and triggers the liquidity execution when contract conditions are satisfied.
 
-The automation is designed to remain transparent, predictable, and publicly auditable.
+All execution rules are enforced directly by the smart contract.
 
 ---
 
 ## Architecture
 
-The liquidity system consists of two layers:
+The liquidity infrastructure consists of two independent layers.
 
 ### On-chain layer
-Smart contracts deployed on the TRON network enforce the rules of liquidity execution.
+
+Smart contracts deployed on the TRON network enforce the liquidity execution rules.
 
 These rules include:
 
 - execution can occur **only once per UTC day**
 - execution requires a minimum controller balance
-- all results are recorded on-chain
+- all execution results are recorded permanently on-chain
+
+Because these rules are enforced by the contract itself, the automation cannot bypass them.
+
+---
 
 ### Automation layer
 
-This repository contains the automation that:
+This repository contains the external automation responsible for:
 
-- checks the system state
-- calls the bootstrap function
-- waits for transaction confirmation
-- publishes execution data
+- checking execution availability
+- calling the `bootstrapAndExecute()` function
+- waiting for transaction confirmation
+- sending execution data to notification systems
 
-Automation is executed using **GitHub Actions**.
+Automation runs using **GitHub Actions**.
 
----
-
-## Execution Logic
-
-The script performs the following steps:
-
-1. Connects to the TRON network via TronGrid.
-2. Calls the `bootstrapAndExecute()` function on the Liquidity Bootstrapper contract.
-3. Waits for transaction confirmation.
-4. Retrieves execution data from the blockchain.
-5. Sends execution results to the notification system.
+This allows the liquidity system to operate continuously without relying on manual interaction.
 
 ---
 
-## Example Output
+## Execution Flow
 
-Example execution payload:
-{
-“ok”: true,
-“result”: “SUCCESS”,
-“txid”: “transaction_hash”,
-“tronscan”: “https://tronscan.org/#/transaction/…”,
-“startedAt”: “…”,
-“endedAt”: “…”
-}
+1. Connect to the TRON network using TronGrid.
+2. Call the `bootstrapAndExecute()` function on the Liquidity Bootstrapper contract.
+3. Wait for transaction confirmation.
+4. Collect execution data.
+5. Publish execution results.
+
 ---
 
 ## Transparency
 
-All executions can be verified using public explorers:
+Every execution is publicly verifiable.
+
+Transaction data can be viewed using public blockchain explorers:
 
 TRONSCAN  
 https://tronscan.org
@@ -74,22 +68,32 @@ https://www.geckoterminal.com
 
 ---
 
-## Security
+## Manual Trigger
 
-Automation **does not bypass smart contract rules**.
+Although the system is automated, execution can also be triggered manually.
 
-Even if the automation script runs multiple times:
+If the daily execution has not occurred and the contract conditions are satisfied, anyone can trigger the execution.
 
-- the contract enforces the daily execution limit
-- execution cannot occur if conditions are not satisfied
+This ensures the system remains decentralized and operational even if automation is interrupted.
 
+---
+
+## Example Execution Payload
+{
+“ok”: true,
+“result”: “SUCCESS”,
+“txid”: “transaction_hash”,
+“tronscan”: “https://tronscan.org/#/transaction/…”,
+“startedAt”: “…”,
+“endedAt”: “…”
+}
 ---
 
 ## Project
 
-This automation is part of the **4TEEN liquidity infrastructure**.
+Part of the **4TEEN liquidity infrastructure**.
 
-More information:  
+Website  
 https://4teen.me
 
 ---
